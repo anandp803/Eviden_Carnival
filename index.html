@@ -71,14 +71,14 @@
     <script>
         var canvas = document.getElementById("renderCanvas");
         var ARbtn = document.getElementById("ARbtn");
-       
+
         var startRenderLoop = function (engine, canvas) {
             engine.runRenderLoop(function () {
                 if (sceneToRender && sceneToRender.activeCamera) {
                     sceneToRender.render();
                 }
             });
-        }        
+        }
 
         var engine = null;
         var scene = null;
@@ -108,6 +108,7 @@
             // This attaches the camera to the canvas
             camera.attachControl(canvas, true);
 
+
             // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
             var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
@@ -121,8 +122,8 @@
             shadowGenerator.useBlurExponentialShadowMap = true;
             shadowGenerator.blurKernel = 32;
 
-             // // Create GUI 
-             var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+            // // Create GUI 
+            var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
             // Create the image
             const scanImage = new BABYLON.GUI.Image("ScanImage", "./scenes/scan.png");
@@ -137,7 +138,7 @@
             scanImage.isVisible = false;
 
             // Add the image to the UI
-            advancedTexture.addControl(scanImage);           
+            advancedTexture.addControl(scanImage);
 
             // Create a button
             var PlaceAvatar = BABYLON.GUI.Button.CreateSimpleButton("PlaceAvatar", "Tap To Place");
@@ -145,21 +146,21 @@
             PlaceAvatar.height = "0.05";
             PlaceAvatar.color = "black";
             PlaceAvatar.background = "#ff6d43";
-            PlaceAvatar.fontSize = 30;            
-            PlaceAvatar.isVisible=false;
+            PlaceAvatar.fontSize = 30;
+            PlaceAvatar.isVisible = false;
 
             // // Position the button
             //PlaceAvatar.horizontalAlignment = BABYLON.GUI.Control.HorizontalAlignment.Center;
             PlaceAvatar.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
             PlaceAvatar.top = "-100px"; // Adjust as needed
 
-           
+
 
             // Add the button to the GUI
             advancedTexture.addControl(PlaceAvatar);
 
 
-            const model = await BABYLON.SceneLoader.ImportMeshAsync("", "./scenes/", "EVI_anim.glb", scene);
+            const model = await BABYLON.SceneLoader.ImportMeshAsync("", "./scenes/", "evii002 2.glb", scene);//EVI_anim,evii002 2
             model.meshes.forEach(mesh => {
                 mesh.isVisible = false;
                 mesh.rotation.y = Math.PI; // 180 degrees in radians
@@ -167,10 +168,17 @@
 
             model.rotationQuaternion = new BABYLON.Quaternion()
 
+            var animationGroups = model.animationGroups;
+            console.log("animation after loading extra are:- ", model.animationGroups.map(group => group.name));
+
+
             var xr = await scene.createDefaultXRExperienceAsync({
                 uiOptions: {
                     sessionMode: "immersive-ar",
-                    referenceSpaceType: "local-floor"
+                    referenceSpaceType: "local-floor",
+                    onError: (error) => {
+                        alert(error);
+                    }
                 },
                 optionalFeatures: true
             });
@@ -178,7 +186,7 @@
             const fm = xr.baseExperience.featuresManager;
 
             const xrTest = fm.enableFeature(BABYLON.WebXRHitTest.Name, "latest");
-            const xrPlanes = fm.enableFeature(BABYLON.WebXRPlaneDetector.Name, "latest");
+            //const xrPlanes = fm.enableFeature(BABYLON.WebXRPlaneDetector.Name, "latest");
             const anchors = fm.enableFeature(BABYLON.WebXRAnchorSystem.Name, 'latest');
 
             const xrBackgroundRemover = fm.enableFeature(BABYLON.WebXRBackgroundRemover.Name);
@@ -209,20 +217,9 @@
             marker.rotation.x = Math.PI / 2; // Rotate to make it horizontal if needed
             marker.isVisible = false; // Keep it hidden initially
 
-            var skeleton = model.skeletons[0];
 
-            // ROBOT
-            skeleton.animationPropertiesOverride = new BABYLON.AnimationPropertiesOverride();
-            skeleton.animationPropertiesOverride.enableBlending = true;
-            skeleton.animationPropertiesOverride.blendingSpeed = 0.05;
-            skeleton.animationPropertiesOverride.loopMode = 1;
 
-            var idleRange = skeleton.getAnimationRange("Idle");
-            var Talk = skeleton.getAnimationRange("Talk");
-            // var runRange = skeleton.getAnimationRange("YBot_Run");
-            // var leftRange = skeleton.getAnimationRange("YBot_LeftStrafeWalk");
-            // var rightRange = skeleton.getAnimationRange("YBot_RightStrafeWalk");
-            //scene.beginAnimation(skeleton, idleRange.from, idleRange.to, true);
+
 
             let hitTest;
 
@@ -231,6 +228,7 @@
                 if (results.length) {
                     marker.isVisible = true;
                     scanImage.isVisible = false;
+                    PlaceAvatar.isVisible = true;
                     hitTest = results[0];
                     // hitTest.transformationMatrix.decompose(undefined, b.rotationQuaternion, b.position);
                     hitTest.transformationMatrix.decompose(undefined, marker.rotationQuaternion, marker.position);
@@ -239,6 +237,8 @@
                     marker.position.y += offset;
                 } else {
                     marker.isVisible = false;
+                    //scanImage.isVisible = true;
+                    //PlaceAvatar.isVisible = false;
                     hitTest = undefined;
                 }
             });
@@ -252,7 +252,16 @@
                     anchor.attachedNode = model.meshes[0];
                     anchor.attachedNode.skeleton = model.skeletons[0];
                     shadowGenerator.addShadowCaster(anchor.attachedNode, true);
-                    //scene.beginAnimation(anchor.attachedNode.skeleton, idleRange.from, idleRange.to, true);
+                    const idleAnimations = animationGroups.filter(function (group) {
+                        return group.name.includes("Standing IDle");//Standing IDle,Idle
+                    });
+
+                    if (idleAnimations.length > 0) {
+                        idleAnimations[0].start(true); // Play the first idle animation
+                    }
+                    // Set scaling
+                    model.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03); // Scale to twice the size
+                    
                 })
 
                 anchors.onAnchorRemovedObservable.add(anchor => {
@@ -264,77 +273,79 @@
                 });
             }
 
-             // Add an event listener for the button
-             PlaceAvatar.onPointerClickObservable.add(async function() {
+            // Add an event listener for the button
+            PlaceAvatar.onPointerClickObservable.add(async function () {
+                console.log("@@@1")
                 if (hitTest && anchors && xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
+                    console.log("@@@2")
                     anchors.addAnchorPointUsingHitTestResultAsync(hitTest);
                     model.meshes.forEach(mesh => {
                         mesh.isVisible = true;
-                    });
+                    });                   
                 }
             });
 
             scene.onPointerDown = (evt, pickInfo) => {
-               
+
             }
 
-            const planes = [];
+            // const planes = [];
 
-            xrPlanes.onPlaneAddedObservable.add(plane => {
-                // plane.polygonDefinition.push(plane.polygonDefinition[0]);
-                // var polygon_triangulation = new BABYLON.PolygonMeshBuilder("name", plane.polygonDefinition.map((p) => new BABYLON.Vector2(p.x, p.z)), scene);
-                // var polygon = polygon_triangulation.build(false, 0.01);
-                // plane.mesh = polygon; //BABYLON.TubeBuilder.CreateTube("tube", { path: plane.polygonDefinition, radius: 0.02, sideOrientation: BABYLON.Mesh.FRONTSIDE, updatable: true }, scene);
-                // //}
-                // planes[plane.id] = (plane.mesh);
-                // const mat = new BABYLON.StandardMaterial("mat", scene);
-                // mat.alpha = 0.001; // Set transparency                
-                // mat.diffuseColor = BABYLON.Color3.Black();
-                // mat.backFaceCulling = false; // Allow the material to be seen from both sides
-                // mat.useAlphaFromDiffuseTexture = true; // Use alpha from diffuse texture if needed
-                // mat.alphaMode = BABYLON.AlphaComposite; // Set alpha mode to composite
-                // polygon.createNormals();
-                // polygon.receiveShadows = true;
-                // plane.mesh.material = mat;
+            // xrPlanes.onPlaneAddedObservable.add(plane => {
+            //     // plane.polygonDefinition.push(plane.polygonDefinition[0]);
+            //     // var polygon_triangulation = new BABYLON.PolygonMeshBuilder("name", plane.polygonDefinition.map((p) => new BABYLON.Vector2(p.x, p.z)), scene);
+            //     // var polygon = polygon_triangulation.build(false, 0.01);
+            //     // plane.mesh = polygon; //BABYLON.TubeBuilder.CreateTube("tube", { path: plane.polygonDefinition, radius: 0.02, sideOrientation: BABYLON.Mesh.FRONTSIDE, updatable: true }, scene);
+            //     // //}
+            //     // planes[plane.id] = (plane.mesh);
+            //     // const mat = new BABYLON.StandardMaterial("mat", scene);
+            //     // mat.alpha = 0.001; // Set transparency                
+            //     // mat.diffuseColor = BABYLON.Color3.Black();
+            //     // mat.backFaceCulling = false; // Allow the material to be seen from both sides
+            //     // mat.useAlphaFromDiffuseTexture = true; // Use alpha from diffuse texture if needed
+            //     // mat.alphaMode = BABYLON.AlphaComposite; // Set alpha mode to composite
+            //     // polygon.createNormals();
+            //     // polygon.receiveShadows = true;
+            //     // plane.mesh.material = mat;
 
-                // plane.mesh.rotationQuaternion = new BABYLON.Quaternion();
-                // plane.transformationMatrix.decompose(plane.mesh.scaling, plane.mesh.rotationQuaternion, plane.mesh.position);
-            });
+            //     // plane.mesh.rotationQuaternion = new BABYLON.Quaternion();
+            //     // plane.transformationMatrix.decompose(plane.mesh.scaling, plane.mesh.rotationQuaternion, plane.mesh.position);
+            // });
 
-            xrPlanes.onPlaneUpdatedObservable.add(plane => {
-                // let mat;
-                // if (plane.mesh) {
-                //     mat = plane.mesh.material;
-                //     plane.mesh.dispose(false, false);
-                // }
-                // const some = plane.polygonDefinition.some(p => !p);
-                // if (some) {
-                //     return;
-                // }
-                // plane.polygonDefinition.push(plane.polygonDefinition[0]);
-                // var polygon_triangulation = new BABYLON.PolygonMeshBuilder("name", plane.polygonDefinition.map((p) => new BABYLON.Vector2(p.x, p.z)), scene);
-                // var polygon = polygon_triangulation.build(false, 0.01);
-                // polygon.createNormals();
-                // plane.mesh = polygon;// BABYLON.TubeBuilder.CreateTube("tube", { path: plane.polygonDefinition, radius: 0.02, sideOrientation: BABYLON.Mesh.FRONTSIDE, updatable: true }, scene);
-                // //}
-                // planes[plane.id] = (plane.mesh);
-                // plane.mesh.material = mat;
-                // plane.mesh.rotationQuaternion = new BABYLON.Quaternion();
-                // plane.transformationMatrix.decompose(plane.mesh.scaling, plane.mesh.rotationQuaternion, plane.mesh.position);
-                // plane.mesh.receiveShadows = true;
-            })
+            // xrPlanes.onPlaneUpdatedObservable.add(plane => {
+            //     // let mat;
+            //     // if (plane.mesh) {
+            //     //     mat = plane.mesh.material;
+            //     //     plane.mesh.dispose(false, false);
+            //     // }
+            //     // const some = plane.polygonDefinition.some(p => !p);
+            //     // if (some) {
+            //     //     return;
+            //     // }
+            //     // plane.polygonDefinition.push(plane.polygonDefinition[0]);
+            //     // var polygon_triangulation = new BABYLON.PolygonMeshBuilder("name", plane.polygonDefinition.map((p) => new BABYLON.Vector2(p.x, p.z)), scene);
+            //     // var polygon = polygon_triangulation.build(false, 0.01);
+            //     // polygon.createNormals();
+            //     // plane.mesh = polygon;// BABYLON.TubeBuilder.CreateTube("tube", { path: plane.polygonDefinition, radius: 0.02, sideOrientation: BABYLON.Mesh.FRONTSIDE, updatable: true }, scene);
+            //     // //}
+            //     // planes[plane.id] = (plane.mesh);
+            //     // plane.mesh.material = mat;
+            //     // plane.mesh.rotationQuaternion = new BABYLON.Quaternion();
+            //     // plane.transformationMatrix.decompose(plane.mesh.scaling, plane.mesh.rotationQuaternion, plane.mesh.position);
+            //     // plane.mesh.receiveShadows = true;
+            // })
 
-            xrPlanes.onPlaneRemovedObservable.add(plane => {
-                if (plane && planes[plane.id]) {
-                    planes[plane.id].dispose()
-                }
-            })
+            // xrPlanes.onPlaneRemovedObservable.add(plane => {
+            //     if (plane && planes[plane.id]) {
+            //         planes[plane.id].dispose()
+            //     }
+            // })
 
             xr.baseExperience.sessionManager.onXRSessionInit.add(() => {
-               PlaceAvatar.isVisible = true; // Show the button
-               scanImage.isVisible = true;
-                planes.forEach(plane => plane.dispose());
-                while (planes.pop()) { };
+                PlaceAvatar.isVisible = false; // Show the button
+                scanImage.isVisible = true;
+                //planes.forEach(plane => plane.dispose());
+                //while (planes.pop()) { };
 
             });
 
