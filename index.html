@@ -138,7 +138,19 @@
             scanImage.isVisible = false;
 
             // Add the image to the UI
-            advancedTexture.addControl(scanImage);
+            advancedTexture.addControl(scanImage);           
+
+
+            // Create a text block
+            const infoText = new BABYLON.GUI.TextBlock();
+            infoText.text = "Take screenshot using in built device feature and share on social platform";
+            infoText.color = "white"; // Text color
+            infoText.fontSize = 25; // Adjust font size as needed           
+            infoText.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+            infoText.top = "100px"; // Position from the top of the screen
+            infoText.isVisible=false;
+            // Add the text block to the GUI
+            advancedTexture.addControl(infoText);
 
             // Create a button
             var PlaceAvatar = BABYLON.GUI.Button.CreateSimpleButton("PlaceAvatar", "Tap To Place");
@@ -149,7 +161,7 @@
             PlaceAvatar.fontSize = 30;
             PlaceAvatar.isVisible = false;
 
-            // // Position the button
+            // Position the button
             //PlaceAvatar.horizontalAlignment = BABYLON.GUI.Control.HorizontalAlignment.Center;
             PlaceAvatar.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
             PlaceAvatar.top = "-100px"; // Adjust as needed
@@ -350,6 +362,7 @@
             xr.baseExperience.sessionManager.onXRSessionInit.add(() => {
                 PlaceAvatar.isVisible = false; // Show the button
                 scanImage.isVisible = true;
+                infoText.isVisible=true;
                 //planes.forEach(plane => plane.dispose());
                 //while (planes.pop()) { };                
             });
@@ -360,7 +373,7 @@
                 PlaceAvatar.isVisible = false; // Show the button
                 scanImage.isVisible = false;
                 marker.isVisible = false;
-                previousDistance = null; // Reset on session end
+                infoText.isVisible=false;
             });
 
 
