@@ -160,12 +160,14 @@
             advancedTexture.addControl(PlaceAvatar);
 
 
-            const model = await BABYLON.SceneLoader.ImportMeshAsync("", "./scenes/", "EVI_anim.glb", scene);//EVI_anim,evii002 2
+            const model = await BABYLON.SceneLoader.ImportMeshAsync("", "./scenes/", "evii002 4.glb", scene);//EVI_anim,evii002 2
             model.meshes.forEach(mesh => {
                 mesh.isVisible = false;
                 mesh.rotation.y = Math.PI; // 180 degrees in radians
-                mesh.scaling.x = -1; // Flip horizontally if needed
+                //mesh.scaling.x = -1; // Flip horizontally if needed
+                mesh.scaling = new BABYLON.Vector3(-0.65, 0.65, 0.65); // Scale to twice the size               
             });
+           
 
             model.rotationQuaternion = new BABYLON.Quaternion()
 
@@ -253,16 +255,16 @@
 
                     anchor.attachedNode = model.meshes[0];
                     anchor.attachedNode.skeleton = model.skeletons[0];
+                    anchor.attachedNode.scaling = new BABYLON.Vector3(-0.65, 0.65, 0.65); // Set scaling here
                     shadowGenerator.addShadowCaster(anchor.attachedNode, true);
                     const idleAnimations = animationGroups.filter(function (group) {
-                        return group.name.includes("Idle");//Standing IDle,Idle
+                        return group.name.includes("Standing IDle");//Standing IDle,Idle
                     });
 
                     if (idleAnimations.length > 0) {
                         idleAnimations[0].start(true); // Play the first idle animation
                     }
                     // Set scaling
-                    model.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03); // Scale to twice the size
                     
                 })
 
@@ -283,6 +285,7 @@
                     anchors.addAnchorPointUsingHitTestResultAsync(hitTest);
                     model.meshes.forEach(mesh => {
                         mesh.isVisible = true;
+                        //mesh.scaling = new BABYLON.Vector3(-0.65, 0.65, 0.65); // Scale to twice the size   
                     });                   
                 }
             });
