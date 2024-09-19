@@ -100,7 +100,7 @@
             var scene = new BABYLON.Scene(engine);
 
             // This creates and positions a free camera (non-mesh)
-            var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 1, -5), scene);
+            var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 1, 5), scene);
             camera.inputs.clear();
             // This targets the camera to scene origin
             camera.setTarget(BABYLON.Vector3.Zero());
@@ -126,11 +126,11 @@
             var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
             // Create the image
-            const scanImage = new BABYLON.GUI.Image("ScanImage", "./scenes/scan.png");
+            const scanImage = new BABYLON.GUI.Image("ScanImage", "./scenes/scan_1.png");
 
             // Set image size and position
-            scanImage.width = "617px"; // Adjust size as needed
-            scanImage.height = "705px"; // Adjust size as needed
+            scanImage.width = "546px"; // Adjust size as needed
+            scanImage.height = "597px"; // Adjust size as needed
             scanImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
             scanImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 
@@ -160,10 +160,11 @@
             advancedTexture.addControl(PlaceAvatar);
 
 
-            const model = await BABYLON.SceneLoader.ImportMeshAsync("", "./scenes/", "evii002 2.glb", scene);//EVI_anim,evii002 2
+            const model = await BABYLON.SceneLoader.ImportMeshAsync("", "./scenes/", "EVI_anim.glb", scene);//EVI_anim,evii002 2
             model.meshes.forEach(mesh => {
                 mesh.isVisible = false;
                 mesh.rotation.y = Math.PI; // 180 degrees in radians
+                mesh.scaling.x = -1; // Flip horizontally if needed
             });
 
             model.rotationQuaternion = new BABYLON.Quaternion()
@@ -181,7 +182,8 @@
                     }
                 },
                 optionalFeatures: true
-            });
+            });          
+           
 
             const fm = xr.baseExperience.featuresManager;
 
@@ -253,7 +255,7 @@
                     anchor.attachedNode.skeleton = model.skeletons[0];
                     shadowGenerator.addShadowCaster(anchor.attachedNode, true);
                     const idleAnimations = animationGroups.filter(function (group) {
-                        return group.name.includes("Standing IDle");//Standing IDle,Idle
+                        return group.name.includes("Idle");//Standing IDle,Idle
                     });
 
                     if (idleAnimations.length > 0) {
@@ -340,13 +342,13 @@
             //         planes[plane.id].dispose()
             //     }
             // })
+      
 
             xr.baseExperience.sessionManager.onXRSessionInit.add(() => {
                 PlaceAvatar.isVisible = false; // Show the button
                 scanImage.isVisible = true;
                 //planes.forEach(plane => plane.dispose());
-                //while (planes.pop()) { };
-
+                //while (planes.pop()) { };                
             });
 
 
@@ -355,6 +357,7 @@
                 PlaceAvatar.isVisible = false; // Show the button
                 scanImage.isVisible = false;
                 marker.isVisible = false;
+                previousDistance = null; // Reset on session end
             });
 
 
