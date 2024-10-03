@@ -108,20 +108,21 @@ var createScene = async function () {
     ""
   );
   increaseButton.width = "0.1";
-  increaseButton.height = "0.05";  
+  increaseButton.height = "0.05";
   increaseButton.background = "#ff6d43";
   increaseButton.color = "black";
-   // Create a TextBlock for the button
-   var textBlock = new BABYLON.GUI.TextBlock();
-   textBlock.text = "+"; // Set the button text
-   textBlock.color = "black"; // Set text color
-   textBlock.fontSize = 80; // Set font size
-   // Center the text inside the button
-   textBlock.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-   textBlock.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-   // Add the TextBlock to the button
-   increaseButton.addControl(textBlock);
-  
+  // Create a TextBlock for the button
+  var textBlock = new BABYLON.GUI.TextBlock();
+  textBlock.text = "+"; // Set the button text
+  textBlock.color = "black"; // Set text color
+  textBlock.fontSize = 80; // Set font size
+  // Center the text inside the button
+  textBlock.horizontalAlignment =
+    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+  textBlock.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+  // Add the TextBlock to the button
+  increaseButton.addControl(textBlock);
+
   increaseButton.verticalAlignment =
     BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
   increaseButton.horizontalAlignment =
@@ -136,7 +137,7 @@ var createScene = async function () {
     "-"
   );
   decreaseButton.width = "0.1";
-  decreaseButton.height = "0.05"; 
+  decreaseButton.height = "0.05";
   decreaseButton.background = "#ff6d43";
   decreaseButton.color = "black";
   // Create a TextBlock for the button
@@ -145,10 +146,11 @@ var createScene = async function () {
   textBlock.color = "black"; // Set text color
   textBlock.fontSize = 80; // Set font size
   // Center the text inside the button
-  textBlock.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+  textBlock.horizontalAlignment =
+    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
   textBlock.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
   // Add the TextBlock to the button
-  decreaseButton.addControl(textBlock); 
+  decreaseButton.addControl(textBlock);
   decreaseButton.verticalAlignment =
     BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
   decreaseButton.horizontalAlignment =
@@ -157,62 +159,101 @@ var createScene = async function () {
   decreaseButton.isVisible = false;
   advancedTexture.addControl(decreaseButton);
 
-      //namaste btn
-    var namasteimgButton = BABYLON.GUI.Button.CreateImageWithCenterTextButton("namasteimgButton", "","./scenes/namaste.png"); // Replace with your image path
-    // Set button properties
-    namasteimgButton.width = "0.1"; // Adjust size as needed
-    namasteimgButton.height = "0.05";
-    namasteimgButton.background = "#ff6d43";
-    namasteimgButton.color = "black";
-    // Set the image properties
-    namasteimgButton.image.stretch = BABYLON.GUI.Image.STRETCH_UNIFORM; // Maintain aspect ratio
-    namasteimgButton.image.thickness = 0; // Remove button border if needed
-    namasteimgButton.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-    namasteimgButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
-    namasteimgButton.left = "-50px"; // Position above the place button
-    namasteimgButton.top = "150px"; 
-    namasteimgButton.isVisible = false;  
-    // Add the button to the GUI
-    advancedTexture.addControl(namasteimgButton);
+  //namaste btn
+  var namasteimgButton = BABYLON.GUI.Button.CreateImageWithCenterTextButton(
+    "namasteimgButton",
+    "",
+    "./scenes/namaste.png"
+  ); // Replace with your image path
+  // Set button properties
+  namasteimgButton.width = "0.12"; // Adjust size as needed
+  namasteimgButton.height = "0.06";
+  namasteimgButton.background = "#ff6d43";
+  namasteimgButton.color = "black";
+  // Set the image properties
+  namasteimgButton.image.stretch = BABYLON.GUI.Image.STRETCH_UNIFORM; // Maintain aspect ratio
+  namasteimgButton.image.thickness = 0; // Remove button border if needed
+  namasteimgButton.horizontalAlignment =
+    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+  namasteimgButton.verticalAlignment =
+    BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+  namasteimgButton.left = "-50px"; // Position above the place button
+  namasteimgButton.top = "150px";
+  namasteimgButton.isVisible = false;
+  // Add the button to the GUI
+  advancedTexture.addControl(namasteimgButton);
 
-      //Idle animation btn
-      var IdleimageButton = BABYLON.GUI.Button.CreateImageWithCenterTextButton("IdleimageButton", "Idle",""); // Replace with your image path
-      // Set button properties
-      IdleimageButton.width = "0.1"; // Adjust size as needed
-      IdleimageButton.height = "0.05";
-      IdleimageButton.background = "#ff6d43";
-      IdleimageButton.color = "black";
-      IdleimageButton.fontSize = 40;
-      // Set the image properties
-      IdleimageButton.image.stretch = BABYLON.GUI.Image.STRETCH_UNIFORM; // Maintain aspect ratio
-      IdleimageButton.image.thickness = 0; // Remove button border if needed
-      IdleimageButton.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-      IdleimageButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
-      IdleimageButton.left = "-50px"; // Position above the place button
-      IdleimageButton.top = "270px"; 
-      IdleimageButton.isVisible = false;    
-      // Add the button to the GUI
-      advancedTexture.addControl(IdleimageButton);
+  //Idle animation btn
+  var IdleimageButton = BABYLON.GUI.Button.CreateImageWithCenterTextButton(
+    "IdleimageButton",
+    "Idle",
+    ""
+  ); // Replace with your image path
+  // Set button properties
+  IdleimageButton.width = "0.12"; // Adjust size as needed
+  IdleimageButton.height = "0.06";
+  IdleimageButton.background = "#ff6d43";
+  IdleimageButton.color = "black";
+  IdleimageButton.fontSize = 40;
+  // Set the image properties
+  IdleimageButton.image.stretch = BABYLON.GUI.Image.STRETCH_UNIFORM; // Maintain aspect ratio
+  IdleimageButton.image.thickness = 0; // Remove button border if needed
+  IdleimageButton.horizontalAlignment =
+    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+  IdleimageButton.verticalAlignment =
+    BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+  IdleimageButton.left = "-50px"; // Position above the place button
+  IdleimageButton.top = "350px";
+  IdleimageButton.isVisible = false;
+  // Add the button to the GUI
+  advancedTexture.addControl(IdleimageButton);
+
+  //toogle UI btn
+  var toogleUIButton = BABYLON.GUI.Button.CreateImageWithCenterTextButton(
+    "toogleUIButton",
+    "",
+    "./scenes/info.png"
+  ); // Replace with your image path
+  // Set button properties
+  toogleUIButton.width = "0.1"; // Adjust size as needed
+  toogleUIButton.height = "0.05";
+  toogleUIButton.background = "#ff6d43";
+  toogleUIButton.color = "black";
+
+  // Adjust image position and size for padding
+  //toogleUIButton.image.left = "5px"; // Adjust for left padding
+  //toogleUIButton.image.top = "5px"; // Adjust for top padding
+  toogleUIButton.image.width = "80%"; // Adjust width to fit with padding
+  toogleUIButton.image.height = "80%"; // Adjust height to fit with padding
+  // Set the image properties
+  toogleUIButton.image.stretch = BABYLON.GUI.Image.STRETCH_UNIFORM; // Maintain aspect ratio
+  toogleUIButton.image.thickness = 0; // Remove button border if needed
+  toogleUIButton.horizontalAlignment =
+    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+  toogleUIButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+  toogleUIButton.left = "50px"; // Position above the place button
+  toogleUIButton.top = "150px";
+  toogleUIButton.isVisible = false;
+  // Add the button to the GUI
+  advancedTexture.addControl(toogleUIButton);
 
   // Create a button
-  var PlaceAvatar = BABYLON.GUI.Button.CreateImageButton(
-    "PlaceAvatar",
-    ""
-  );
+  var PlaceAvatar = BABYLON.GUI.Button.CreateImageButton("PlaceAvatar", "");
   PlaceAvatar.width = "0.2";
-  PlaceAvatar.height = "0.05";  
-  PlaceAvatar.background = "#ff6d43";  
+  PlaceAvatar.height = "0.05";
+  PlaceAvatar.background = "#ff6d43";
   PlaceAvatar.isVisible = false;
   // Create a TextBlock for the button
-    var textBlock = new BABYLON.GUI.TextBlock();
-    textBlock.text = "Tap To Place"; // Set the button text
-    textBlock.color = "black"; // Set text color
-    textBlock.fontSize = 30; // Set font size
-    // Center the text inside the button
-    textBlock.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-    textBlock.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-    // Add the TextBlock to the button
-    PlaceAvatar.addControl(textBlock);
+  var textBlock = new BABYLON.GUI.TextBlock();
+  textBlock.text = "Tap To Place"; // Set the button text
+  textBlock.color = "black"; // Set text color
+  textBlock.fontSize = 30; // Set font size
+  // Center the text inside the button
+  textBlock.horizontalAlignment =
+    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+  textBlock.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+  // Add the TextBlock to the button
+  PlaceAvatar.addControl(textBlock);
   PlaceAvatar.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
   PlaceAvatar.top = "-100px"; // Adjust as needed
   // Add the button to the GUI
@@ -239,30 +280,32 @@ var createScene = async function () {
   model.rotationQuaternion = new BABYLON.Quaternion();
 
   // Function to play any animation by name
-    function playAnimationByName(animationName, loop = false) {
+  function playAnimationByName(animationName, loop = false) {
     var animationGroups = model.animationGroups;
     console.log(
-        "animation after loading extra are:- ",
-        model.animationGroups.map((group) => group.name)
-      );
-    const animationGroup = animationGroups.find(group => group.name === animationName);
+      "animation after loading extra are:- ",
+      model.animationGroups.map((group) => group.name)
+    );
+    const animationGroup = animationGroups.find(
+      (group) => group.name === animationName
+    );
     if (animationGroup) {
-        // Stop any currently playing animation
-        animationGroups.forEach(group => {
-            if (group.isPlaying) {
-                group.stop(); // Stop any currently playing animation
-            }
-        });
+      // Stop any currently playing animation
+      animationGroups.forEach((group) => {
+        if (group.isPlaying) {
+          group.stop(); // Stop any currently playing animation
+        }
+      });
 
-        // Reset the animation to the start
-        animationGroup.goToFrame(0); // Reset to the first frame
+      // Reset the animation to the start
+      animationGroup.goToFrame(0); // Reset to the first frame
 
-        // Start the new animation
-        animationGroup.start(loop); // Play the animation
+      // Start the new animation
+      animationGroup.start(loop); // Play the animation
     } else {
-        console.error(`Animation "${animationName}" not found.`);
+      console.error(`Animation "${animationName}" not found.`);
     }
-}
+  }
 
   var xr = await scene.createDefaultXRExperienceAsync({
     uiOptions: {
@@ -377,12 +420,13 @@ var createScene = async function () {
         //mesh.scaling = new BABYLON.Vector3(-0.65, 0.65, 0.65); // Scale to twice the size
       });
     }
-    playAnimationByName("Standing IDle",true);    
+    playAnimationByName("Standing IDle", true);
     decreaseButton.isVisible = true;
     increaseButton.isVisible = true;
-    namasteimgButton.isVisible=true;
-    IdleimageButton.isVisible=true;
-  }); 
+    namasteimgButton.isVisible = true;
+    IdleimageButton.isVisible = true;
+    toogleUIButton.isVisible = true;
+  });
 
   let scaleFactor = 0.1; // Factor by which to scale
 
@@ -407,26 +451,48 @@ var createScene = async function () {
     });
   });
 
-   // Add an event listener for button clicks
-   namasteimgButton.onPointerDownObservable.add(() => {
+  // Add an event listener for button clicks
+  namasteimgButton.onPointerDownObservable.add(() => {
     console.log("namaste button clicked!");
     playAnimationByName("Namaste", false);
-    });
+  });
 
-     // Add an event listener for button clicks
-   IdleimageButton.onPointerDownObservable.add(() => {
+  // Add an event listener for button clicks
+  IdleimageButton.onPointerDownObservable.add(() => {
     console.log("Idle anim button clicked!");
-    playAnimationByName("Standing IDle",true);
-    });
+    playAnimationByName("Standing IDle", true);
+  });
 
-  scene.onPointerDown = (evt, pickInfo) => {};
+  let istoggle=true;
+  // Add an event listener for button clicks
+  toogleUIButton.onPointerDownObservable.add(() => {
+    console.log("toogleUIButton button clicked!");
+    istoggle=!istoggle;
+    if(!istoggle)
+    {
+      PlaceAvatar.isVisible = false; // Show the button
+      decreaseButton.isVisible = false;
+      increaseButton.isVisible = false;
+      namasteimgButton.isVisible = false;
+      IdleimageButton.isVisible = false;
+    }else{
+      PlaceAvatar.isVisible = true; // Show the button
+      decreaseButton.isVisible = true;
+      increaseButton.isVisible = true;
+      namasteimgButton.isVisible = true;
+      IdleimageButton.isVisible = true;  
+    }
+  });
+
+  scene.onPointerDown = (evt, pickInfo) => { };
 
   xr.baseExperience.sessionManager.onXRSessionInit.add(() => {
     PlaceAvatar.isVisible = false; // Show the button
     decreaseButton.isVisible = false;
     increaseButton.isVisible = false;
-    namasteimgButton.isVisible=false;
-    IdleimageButton.isVisible=false;
+    namasteimgButton.isVisible = false;
+    IdleimageButton.isVisible = false;
+    toogleUIButton.isVisible = false;
     scanImage.isVisible = true;
     infoText.isVisible = true;
     //planes.forEach(plane => plane.dispose());
@@ -438,8 +504,9 @@ var createScene = async function () {
     PlaceAvatar.isVisible = false; // Show the button
     decreaseButton.isVisible = false;
     increaseButton.isVisible = false;
-    namasteimgButton.isVisible=false;
-    IdleimageButton.isVisible=false;
+    namasteimgButton.isVisible = false;
+    IdleimageButton.isVisible = false;
+    toogleUIButton.isVisible = false;
     scanImage.isVisible = false;
     marker.isVisible = false;
     infoText.isVisible = false;
