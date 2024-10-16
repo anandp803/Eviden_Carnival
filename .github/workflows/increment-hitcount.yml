@@ -1,0 +1,41 @@
+name: Increment Hit Count
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+  push:
+    branches:
+      - feature/size-animationSwitch # Adjust based on your default branch
+
+jobs:
+  increment-hitcount:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Read hit count
+        id: read_count
+        run: |
+          # Read the current hit count from the JSON file
+          count=$(jq '.count' hitcount.json)
+          echo "Current hit count is $count"
+          # Set the count as an output variable
+          echo "::set-output name=current_count::$count"
+
+      - name: Increment hit count
+        run: |
+          # Use the output variable to increment the count
+          new_count=$(( ${{ steps.read_count.outputs.current_count }} + 1 ))
+          echo "New hit count is $new_count"
+          # Update the JSON file with the new count
+          jq --argjson count "$new_count" '.count = $count' hitcount.json > updated.json
+          mv updated.json hitcount.json
+
+      - name: Commit updated hit count
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add hitcount.json
+          git commit -m "Increment hit count" || echo "No changes to commit"
+          git push
