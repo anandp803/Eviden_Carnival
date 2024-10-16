@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
   push:
     branches:
-      - main # Adjust based on your default branch
+      - feature/size-animationSwitch # Adjust based on your default branch
 
 jobs:
   increment-hitcount:
